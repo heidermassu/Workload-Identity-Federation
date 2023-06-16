@@ -5,6 +5,16 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'Project ID'
+        required: true
+      location:
+        description: 'Location'
+        required: true
+      github_repository:
+        description: 'GitHub repository'
+        required: true
 
 jobs:
   terraform:
@@ -26,11 +36,4 @@ jobs:
 
       - name: Execute Python script
         run: |
-          # Prompt the user for variable values
-          echo "Enter the project ID:"
-          read project_id
-          echo "Enter the location:"
-          read location
-          echo "Enter the GitHub repository:"
-          read github_repository
-          python terraform_script.py
+          python terraform_script.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }}
