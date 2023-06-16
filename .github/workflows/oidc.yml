@@ -27,14 +27,7 @@ jobs:
       - name: Authenticate using ADC
         id: auth
         run: |
-          echo "::set-output name=auth_url::$(gcloud auth application-default login)"
-
-      - name: Manual approval
-        if: ${{ steps.auth.outputs.auth_url != '' }}
-        run: |
-          echo "Please authenticate using the following URL:"
-          echo "${{ steps.auth.outputs.auth_url }}"
-          echo "Once authenticated, click 'Approve' on the Actions tab to continue."
+          gcloud auth application-default login --quiet
 
       - name: Set up Python
         uses: actions/setup-python@v2
