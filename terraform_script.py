@@ -3,9 +3,9 @@ from google.auth import default, exceptions
 from google.auth.transport import requests
 
 # Prompt the user for variable values
-project_id = input("Enter the project ID: ")
-location = input("Enter the location: ")
-github_repository = input("Enter the GitHub repository: ")
+#project_id = input("Enter the project ID: ")
+#location = input("Enter the location: ")
+#github_repository = input("Enter the GitHub repository: ")
 
 
 # Try to get the default credentials
