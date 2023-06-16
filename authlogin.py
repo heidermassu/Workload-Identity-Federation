@@ -1,30 +1,5 @@
-from google.auth import default, exceptions
-from google.auth.transport import requests
 import subprocess
 import argparse
-
-def login_to_gcp():
-    try:
-        credentials, project_id = default()
-    except exceptions.DefaultCredentialsError:
-        print("Unable to retrieve default credentials. Please make sure you have authenticated with gcloud.")
-        return
-
-    if credentials.expired:
-        try:
-            credentials.refresh(requests.Request())
-        except exceptions.RefreshError:
-            print("Failed to refresh credentials. Please check your authentication configuration.")
-            return
-
-    # Access token for authentication
-    access_token = credentials.token
-
-    # Print the access token (for demonstration purposes)
-    print(f"Access token: {access_token}")
-
-    # Use the credentials for further API requests or operations
-
 
 
 def terraform():
