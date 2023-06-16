@@ -2,21 +2,11 @@ from google.auth import client_secrets, exceptions
 from google.auth.transport import requests
 import subprocess
 import argparse
-
+from google_auth_oauthlib.flow import InstalledAppFlow
 
 def login_to_gcp(username, password):
-    try:
-        credentials, project_id = client_secrets.Credentials.from_client_secrets_file()
-    except exceptions.DefaultCredentialsError:
-        print("Unable to retrieve default credentials. Please make sure you have authenticated with gcloud.")
-        return
-
-    if credentials.expired:
-        try:
-            credentials.refresh(requests.Request())
-        except exceptions.RefreshError:
-            print("Failed to refresh credentials. Please check your authentication configuration.")
-            return
+    flow = InstalledAppFlow.from_client_secrets_file("client_secrets.json", scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    credentials = flow.run_local_server(port=0)
 
     # Access token for authentication
     access_token = credentials.token
@@ -25,7 +15,6 @@ def login_to_gcp(username, password):
     print(f"Access token: {access_token}")
 
     # Use the credentials for further API requests or operations
-
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GCP Terraform Deployment Script")
