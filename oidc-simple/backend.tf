@@ -11,7 +11,7 @@ terraform {
   }
 }
 
-provider “google” {
+provider "google" {
 project =  var.project_id
 region =  var.location
 credentials = ${file("././application_default_credentials.json")}
