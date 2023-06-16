@@ -28,9 +28,7 @@ access_token = credentials.token
 
 # Print the access token (for demonstration purposes)
 print(f"Access token: {access_token}")
-print(f"project_id: {project_id}")
-print(f"location: {location}")
-print(f"github_repository: {github_repository}")
+
 
 # Change to the oidc-simple folder
 subprocess.run(["cd", ".\\oidc-simple"], shell=True, check=True)
@@ -43,4 +41,14 @@ subprocess.run(["terraform", "plan"], cwd=".\\oidc-simple", check=True)
 
 # Run terraform apply with variable values
 #subprocess.run(["terraform", "apply", f"-var=project_id={project_id}", f"-var=location={location}", f"-var=github_repository={github_repository}"], cwd=".\\oidc-simple", check=True)
-subprocess.run(["terraform", "apply", "-var=project_id={project_id}", "-var=location={location}","-var=github_repository={github_repository}", ],cwd=".\\oidc-simple", check=True,)
+subprocess.run(["terraform", "apply",
+        "-var",
+        f"project_id={project_id}",
+        "-var",
+        f"location={location}",
+        "-var",
+        f"github_repository={github_repository}",
+    ],
+    cwd=".\\oidc-simple",
+    check=True,
+)

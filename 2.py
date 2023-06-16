@@ -5,7 +5,7 @@ import argparse
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 def login_to_gcp(username, password):
-    flow = InstalledAppFlow.from_client_secrets_file("client_secrets.json", scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    flow = InstalledAppFlow.from_client_secrets_file("application_default_credentials.json", scopes=["https://www.googleapis.com/auth/cloud-platform"])
     credentials = flow.run_local_server(port=0)
 
     # Access token for authentication
