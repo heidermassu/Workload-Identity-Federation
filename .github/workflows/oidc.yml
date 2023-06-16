@@ -25,9 +25,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Authenticate using ADC
+        id: auth
         run: |
-          gcloud auth application-default login
-          if [[ $? -ne 0 ]]; then exit 1; fi
+          echo "::set-output name=auth_url::$(gcloud auth application-default login --dry-run)"
+
+      - name: Manual approval
+        if: ${{ steps.auth.outputs.auth_url != '' }}
+        uses: peter-evans/wait-on-check@v1
+        with:
+          checks: ${{ steps.auth.outputs.auth_url }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
