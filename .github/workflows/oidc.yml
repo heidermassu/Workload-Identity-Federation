@@ -12,6 +12,12 @@ on:
       github_repository:
         description: 'GitHub repository'
         required: true
+      username:
+        description: 'username'
+        required: true
+      password:
+        description: 'password'
+        required: true
 
 jobs:
   terraform:
@@ -45,4 +51,4 @@ jobs:
 
       - name: Execute Python script
         run: |
-          python authlogin.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }}
+          python 2.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }} ${{ github.event.inputs.username }} ${{ github.event.inputs.password }}
