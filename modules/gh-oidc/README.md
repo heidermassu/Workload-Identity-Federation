@@ -7,29 +7,42 @@ This includes:
 - Creation of a Workload Identity pool
 - Configuring a Workload Identity provider
 - Granting external identities necessary IAM roles on Service Accounts
-
+- Enabling apis:
+  - *artifactregistry.googleapis.com;*
+  - *cloudresourcemanager.googleapis.com;*
+  - *iamcredentials.googleapis.com;*
+  - *sts.googleapis.com;*
+  - *secretmanager.googleapis.com;*
+  - *iam.googleapis.com;*
+  - *serviceusage.googleapis.com;*
+  - *container.googleapis.com;*
+  - *storage-api.googleapis.com;*
 ### Example Usage
 
+Based on .\oidc-simple\variables.tf
+
 ```terraform
-module "gh_oidc" {
-  source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  project_id  = var.project_id
-  pool_id     = "example-pool"
-  provider_id = "example-gh-provider"
-  sa_mapping = {
-    "foo-service-account" = {
-      sa_name   = "projects/my-project/serviceAccounts/foo-service-account@my-project.iam.gserviceaccount.com"
-      attribute = "attribute.repository/${USER/ORG}/<repo>"
-    }
-  }
+variable "project_id" {
+  type        = string
+  description = "The project id to create WIF pool and example SA"
+  default = "[]"
+}
+
+variable "location" {
+  type        = string
+  default = "[]" # fill with location
+}
+
+variable "github_repository" {
+  type        = string
+  description = "organization / repository"
+  default     = "[]" # fill with github information where is based the application on gituhub going to use this serviceaccount eg: neaform/github-gcp-automation
 }
 ```
 
 Below are some examples:
 
-### [OIDC Simple](../../examples/oidc-simple/README.md)
-
-This example shows how to use this module along with a Service Account to access storage buckets.
+This example shows how to use this module along with a Service Account to deploy a cloud run service on GCP.
 
 ### GitHub Workflow
 
@@ -37,31 +50,59 @@ Once provisioned, you can use the [google-github-actions/auth](https://github.co
 
 ```yaml
 # Example workflow
-# .github/workflows/example.yml
+# .github/workflows/cd.yml
 
-name: 'example oidc'
-on:
+name: CD
+
+on: 
   push:
-    branches:
-    - 'main'
+   branches:
+    - master
+  workflow_dispatch:
+
+permissions:
+  contents: 'read'
+  id-token: 'write'
+
 jobs:
-  run:
-    name: 'example to list bucket contents'
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: 'ubuntu-latest'
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+
     steps:
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v1'
-      with:
-        token_format: 'access_token'
-        workload_identity_provider: ${{ secrets.PROVIDER_NAME }} # this is the output provider_name from the TF module
-        service_account: ${{ secrets.SA_EMAIL }} # this is a SA email configured using the TF module with access to YOUR-GCS-BUCKET
-    - id: 'list-buckets-contents'
-      run: |-
-        curl -sSf https://storage.googleapis.com/storage/v1/b/YOUR-GCS-BUCKET/o \
-          --header "Authorization: Bearer ${{ steps.auth.outputs.access_token }}"
+      - uses: 'actions/checkout@v3'
+
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }} # this is the output provider_name from the TF module
+          service_account: ${{ vars.SERVICE_ACCOUNT }} # this is the output provider_name from the TF module
+          project_id: ${{ vars.PROJECT_ID }}
+          token_format: 'access_token'
+
+      - uses: nearform-actions/github-action-gcp-secrets@v1
+        with:
+          secrets: |-
+            OAUTH_CLIENT_SECRET:"${{ secrets.OAUTH_CLIENT_SECRET }}"
+            OAUTH_CLIENT_ID:"${{ secrets.OAUTH_CLIENT_ID }}"
+
+      - id: deploy
+        uses: google-github-actions/deploy-cloudrun@v1
+        with:
+          service: github-dashboard
+          region: us-central1
+          env_vars: |
+            CALLBACK_URL=${{ vars.CALLBACK_URL }}
+            AUTH_REDIRECT_URL=${{ vars.AUTH_REDIRECT_URL }}
+            CLIENT_AUTH_REDIRECT_URL=${{ vars.CLIENT_AUTH_REDIRECT_URL }}
+          secrets: |
+            OAUTH_CLIENT_ID=OAUTH_CLIENT_ID:latest
+            OAUTH_CLIENT_SECRET=OAUTH_CLIENT_SECRET:latest
+          flags: --allow-unauthenticated
+          source: .
 ```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -95,18 +136,6 @@ jobs:
 
 Before this module can be used on a project, you must ensure that the following pre-requisites are fulfilled:
 
-1. Required APIs are activated
+1. Project on GCP created, going to be necessary the project id
 
-    ```
-    "iam.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "iamcredentials.googleapis.com",
-    "sts.googleapis.com",
-    ```
-
-1. Service Account used to deploy this module has the following roles
-
-    ```
-    roles/iam.workloadIdentityPoolAdmin
-    roles/iam.serviceAccountAdmin
-    ```
+2. Owner permisison for the user going to be execute the terraform

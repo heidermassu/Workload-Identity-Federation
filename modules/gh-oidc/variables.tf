@@ -91,10 +91,6 @@ variable "sa_mapping" {
   default     = {}
 }
 
-variable "github_repository" {
-  type        = string
-}
-
 
 
 

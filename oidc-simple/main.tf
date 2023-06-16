@@ -1,9 +1,8 @@
 module "oidc" {
   source      = "../modules/gh-oidc"
   project_id  = var.project_id
-  github_repository = "heidermassu/Workload-Identity-Federation"
-  pool_id     = "pool2-${var.project_id}"
-  provider_id = "provider2-${var.project_id}"
+  pool_id     = "pool-${var.project_id}"
+  provider_id = "provider-${var.project_id}"
   sa_mapping = {
     (google_service_account.sa.account_id) = {
       sa_name   = google_service_account.sa.name

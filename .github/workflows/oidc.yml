@@ -1,0 +1,39 @@
+name: Terraform Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Execute Terraform
+        run: |
+          # Prompt the user for variable values
+          echo "Enter the project ID:"
+          read project_id
+          echo "Enter the location:"
+          read location
+          echo "Enter the GitHub repository:"
+          read github_repository
+
+          # Run Terraform commands with interactive prompts
+          terraform init -input=false -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}"
+          terraform plan -input=false -var="project_id=${project_id}" -var="location=${location}" -var="github_repository=${github_repository}"
+          terraform apply -input=false -auto-approve -var="project_id=${project_id}" -var="location=${location}" -var="github_repository=${github_repository}"
