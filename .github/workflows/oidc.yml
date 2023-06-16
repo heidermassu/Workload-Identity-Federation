@@ -27,7 +27,7 @@ jobs:
       - name: Authenticate using ADC
         id: auth
         run: |
-          echo "::set-output name=auth_url::$(gcloud auth application-default login --dry-run)"
+          echo "::set-output name=auth_url::$(gcloud auth application-default login)"
 
       - name: Manual approval
         if: ${{ steps.auth.outputs.auth_url != '' }}
