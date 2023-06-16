@@ -20,19 +20,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
+      - name: Update JSON File
+        run: |
+          # Read the file content
+          file_content=$(cat application_default_credentials.json)
 
-      #- name: Authenticate using ADC
-      #  id: auth
-      #  run: |
-      #    echo "::set-output name=auth_required::true"
-#
-      #- name: Manual approval
-      #  if: ${{ steps.auth.outputs.auth_required == 'true' }}
-      #  run: |
-      #    echo "Please authenticate using the following command:"
-      #    echo "gcloud auth application-default login"
-      #    echo "Once authenticated, click 'Approve' on the Actions tab to continue."
+          # Update the values using sed
+          updated_content=$(echo "$file_content" | \
+                            sed -e "s/\"project_id\": \"CLIENT_ID\"/\"client_id\": \"${{ vars.CLIENT_ID }}\"/" \
+                                -e "s/\"location\": \"CLIENT_SECRET\"/\"client_secret\": \"${{ vars.CLIENT_SECRET }}\"/")
 
+          # Save the updated content back to the file
+          echo "$updated_content" > application_default_credentials.json
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
