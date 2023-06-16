@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Authenticate using ADC
+        run: gcloud auth application-default login
+        
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
