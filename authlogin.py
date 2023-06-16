@@ -33,4 +33,4 @@ def terraform():
         check=True,
     )
 if __name__ == "__main__":
-    login_to_gcp()
+    terraform()
