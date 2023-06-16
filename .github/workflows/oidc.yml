@@ -27,7 +27,14 @@ jobs:
       - name: Authenticate using ADC
         id: auth
         run: |
-          gcloud auth application-default login --quiet
+          echo "::set-output name=auth_required::true"
+
+      - name: Manual approval
+        if: ${{ steps.auth.outputs.auth_required == 'true' }}
+        run: |
+          echo "Please authenticate using the following command:"
+          echo "gcloud auth application-default login"
+          echo "Once authenticated, click 'Approve' on the Actions tab to continue."
 
       - name: Set up Python
         uses: actions/setup-python@v2
