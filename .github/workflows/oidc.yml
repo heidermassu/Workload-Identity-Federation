@@ -12,12 +12,6 @@ on:
       github_repository:
         description: 'GitHub repository'
         required: true
-      username:
-        description: 'username'
-        required: true
-      password:
-        description: 'password'
-        required: true
 
 jobs:
   terraform:
