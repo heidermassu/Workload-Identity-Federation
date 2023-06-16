@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   terraform:
@@ -23,7 +24,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Execute Terraform
+      - name: Execute Python script
         run: |
           # Prompt the user for variable values
           echo "Enter the project ID:"
@@ -32,8 +33,4 @@ jobs:
           read location
           echo "Enter the GitHub repository:"
           read github_repository
-
-          # Run Terraform commands with interactive prompts
-          terraform init -input=false -backend-config="bucket=${{ secrets.TF_BACKEND_BUCKET }}"
-          terraform plan -input=false -var="project_id=${project_id}" -var="location=${location}" -var="github_repository=${github_repository}"
-          terraform apply -input=false -auto-approve -var="project_id=${project_id}" -var="location=${location}" -var="github_repository=${github_repository}"
+          python terraform_script.py
