@@ -13,8 +13,8 @@ terraform {
 
 provider “google” {
 # Configuration options
-project = “project-name”
-region = “us-east1”
+project =  var.project_id
+region =  var.location
 credentials = “${file(“././application_default_credentials.json”)}”
 
 }

@@ -51,4 +51,4 @@ jobs:
 
       - name: Execute Python script
         run: |
-          python 2.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }} ${{ github.event.inputs.username }} ${{ github.event.inputs.password }}
+          python authlogin.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }}
