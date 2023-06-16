@@ -20,7 +20,7 @@ def terraform():
     subprocess.run(["terraform", "init"], check=True)
 
     # Run terraform apply with variable values
-    subprocess.run(["terraform", "apply",
+    subprocess.run(["terraform", "apply", "-auto-approve",
         "-var", f"project_id={project_id}",
         "-var", f"location={location}",
         "-var", f"github_repository={github_repository}",
