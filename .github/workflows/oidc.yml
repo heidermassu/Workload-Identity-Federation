@@ -9,7 +9,15 @@ on:
       github_repository:
         description: 'GitHub repository'
         required: true
-
+      CLIENT_ID:
+        description: 'CLIENT_ID'
+        required: true
+      CLIENT_SECRET:
+        description: 'CLIENT_SECRET'
+        required: true
+      REFRESH_TOKEN:
+        description: 'REFRESH_TOKEN'
+        required: true
 jobs:
   terraform:
     runs-on: ubuntu-latest
@@ -23,16 +31,19 @@ jobs:
       #    gcloud auth application-default login --no-launch-browser
 
       - name: Update JSON File
+        env:
+          CLIENT_ID: ${{ github.event.inputs.CLIENT_ID }}
+          CLIENT_SECRET: ${{ github.event.inputs.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ github.event.inputs.REFRESH_TOKEN }}
         run: |
           # Read the file content
           file_content=$(cat oidc-simple/application_default_credentials.json)
 
           # Update the values using sed
           updated_content=$(echo "$file_content" | \
-                    sed -e "s/\"client_id\": \"CLIENT_ID\"/\"client_id\": \"$client_id\"/" \
-                        -e "s/\"client_secret\": \"CLIENT_SECRET\"/\"client_secret\": \"$client_secret\"/" \
-                        -e "s/\"quota_project_id\": \"QUOTA_PROJECT_ID\"/\"quota_project_id\": \"$quota_project_id\"/" \
-                        -e "s/\"refresh_token\": \"TOKEN\"/\"refresh_token\": \"$refresh_token\"/")
+                    sed -e "s/\"client_id\": \"CLIENT_ID\"/\"client_id\": \"$CLIENT_ID\"/" \
+                        -e "s/\"client_secret\": \"CLIENT_SECRET\"/\"client_secret\": \"$CLIENT_SECRET\"/" \
+                        -e "s/\"refresh_token\": \"TOKEN\"/\"refresh_token\": \"$REFRESH_TOKEN\"/")
 
           # Save the updated content back to the file
           echo "$updated_content" > oidc-simple/application_default_credentials.json
