@@ -2,6 +2,25 @@ import subprocess
 import argparse
 import os
 
+def login_gcloud():
+    # Run gcloud auth application-default login command
+    result = subprocess.run(["gcloud", "auth", "application-default", "login", "--no-launch-browser"], capture_output=True, text=True)
+
+    # Check if the command succeeded
+    if result.returncode == 0:
+        # Extract the authorization code from the command output
+        output = result.stdout.strip()
+        authorization_code = output.split(" ")[-1]
+
+        # Print the authorization code
+        print("Authorization Code:", authorization_code)
+    else:
+        # Print the error message if the command failed
+        print("Error:", result.stderr)
+
+if __name__ == "__main__":
+    login_gcloud()
+
 def terraform():
     parser = argparse.ArgumentParser(description="GCP Terraform Deployment Script")
     parser.add_argument("project_id", type=str, help="Project ID")
