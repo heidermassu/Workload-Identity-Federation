@@ -21,9 +21,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Login gcp
-        run: |
-          gcloud auth application-default login --no-launch-browser
+      #- name: Login gcp
+      #  run: |
+      #    gcloud auth application-default login --no-launch-browser
 
       - name: Update JSON File
         run: |
