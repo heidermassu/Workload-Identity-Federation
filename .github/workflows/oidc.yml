@@ -41,9 +41,9 @@ jobs:
 
           # Update the values using sed
           updated_content=$(echo "$file_content" | \
-                    sed -e "s/\"client_id\": \"CLIENT_ID\"/\"client_id\": \"$CLIENT_ID\"/" \
-                        -e "s/\"client_secret\": \"CLIENT_SECRET\"/\"client_secret\": \"$CLIENT_SECRET\"/" \
-                        -e "s/\"refresh_token\": \"TOKEN\"/\"refresh_token\": \"$REFRESH_TOKEN\"/")
+                    sed -e "s|\"client_id\": \"CLIENT_ID\"|\"client_id\": \"$CLIENT_ID\"|" \
+                        -e "s|\"client_secret\": \"CLIENT_SECRET\"|\"client_secret\": \"$CLIENT_SECRET\"|" \
+                        -e "s|\"refresh_token\": \"TOKEN\"|\"refresh_token\": \"$REFRESH_TOKEN\"|")
 
           # Save the updated content back to the file
           echo "$updated_content" > oidc-simple/application_default_credentials.json
