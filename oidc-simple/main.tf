@@ -32,7 +32,7 @@ resource "random_string" "name_suffix" {
 
 resource "google_service_account" "sa" {
   project    = var.project_id
-  account_id = "svc-test-${var.project_id}-${random_string.name_suffix.result}"
+  account_id = "svc-test-${var.project_id}-1"
 }
 
 resource "google_project_iam_member" "Storage_Admin" {
