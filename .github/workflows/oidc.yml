@@ -36,7 +36,7 @@ jobs:
           CLIENT_SECRET: ${{ github.event.inputs.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ github.event.inputs.REFRESH_TOKEN }}
         run: |
-          # Read the file content
+          # Read the file contents
           file_content=$(cat oidc-simple/application_default_credentials.json)
 
           # Update the values using sed
