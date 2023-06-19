@@ -17,12 +17,6 @@ module "apis" {
   
 }
 
-module "svc" {
-  source      = "../modules/gh-serviceaccount"
-  project_id  = var.project_id
-  
-}
-
 #module "project" {
 #  source      = "../modules/gh-project"
 #  project_id  = var.project_id
