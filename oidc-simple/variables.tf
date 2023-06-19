@@ -4,11 +4,6 @@ variable "project_id" {
   default = ""
 }
 
-variable "location" {
-  type        = string
-  default = ""
-}
-
 variable "github_repository" {
   type        = string
   description = "organization / repository"
