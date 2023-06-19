@@ -37,6 +37,11 @@ jobs:
           # Save the updated content back to the file
           echo "$updated_content" > oidc-simple/application_default_credentials.json
 
+      - name: read JSON File
+        run: |
+          # Read the file content
+          cat oidc-simple/application_default_credentials.json
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
