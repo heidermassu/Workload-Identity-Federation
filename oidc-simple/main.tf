@@ -1,8 +1,8 @@
 module "oidc" {
   source      = "../modules/gh-oidc"
   project_id  = var.project_id
-  pool_id     = "pool-test-test1-${var.project_id}"
-  provider_id = "provider-test-test1-${var.project_id}"
+  pool_id     = "pool-test10-${var.project_id}"
+  provider_id = "provider-test10-${var.project_id}"
   sa_mapping = {
     (google_service_account.sa.account_id) = {
       sa_name   = google_service_account.sa.name
@@ -32,7 +32,7 @@ resource "random_string" "name_suffix" {
 
 resource "google_service_account" "sa" {
   project    = var.project_id
-  account_id = "svc-test-test1-${var.project_id}"
+  account_id = "svc-test10-${var.project_id}"
 }
 
 resource "google_project_iam_member" "Storage_Admin" {

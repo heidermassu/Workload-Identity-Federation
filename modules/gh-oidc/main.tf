@@ -1,8 +1,3 @@
-resource "random_string" "name_suffix" {
-  length  = 8
-  special = false
-}
-
 resource "google_iam_workload_identity_pool" "main" {
   project                   = var.project_id
   workload_identity_pool_id = var.pool_id
