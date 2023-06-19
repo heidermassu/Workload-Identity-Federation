@@ -25,11 +25,6 @@ module "apis" {
 #  project_name = var.project_id
 #}
 
-resource "random_string" "name_suffix" {
-  length  = 8
-  special = false
-}
-
 resource "google_service_account" "sa" {
   project    = var.project_id
   account_id = "svc-t1-${var.project_id}"
