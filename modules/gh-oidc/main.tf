@@ -26,4 +26,3 @@ resource "google_service_account_iam_member" "wif-sa" {
   role               = "roles/iam.workloadIdentityUser"
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.main.name}/${each.value.attribute}"
 }
-
