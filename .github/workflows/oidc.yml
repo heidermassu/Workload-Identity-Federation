@@ -6,9 +6,6 @@ on:
       project_id:
         description: 'Project ID'
         required: true
-      location:
-        description: 'Location'
-        required: true
       github_repository:
         description: 'GitHub repository'
         required: true
@@ -51,4 +48,4 @@ jobs:
 
       - name: Execute Python script
         run: |
-          python authlogin.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.location }} ${{ github.event.inputs.github_repository }}
+          python authlogin.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.github_repository }}
