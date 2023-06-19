@@ -14,6 +14,10 @@ def terraform():
     location = args.location
     github_repository = args.github_repository
 
+    # Set project with gcloud config command
+    subprocess.run(["gcloud", "config", "set", "project", project_id], check=True)
+
+
     os.chdir("oidc-simple")
 
     # Run terraform init
