@@ -23,8 +23,8 @@ jobs:
 
       - name: Login gcp
         run: |
-          gcloud auth application-default login
-          
+          gcloud auth application-default login --no-launch-browser
+
       - name: Update JSON File
         run: |
           # Read the file content
