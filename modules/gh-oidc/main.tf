@@ -5,7 +5,7 @@ resource "random_string" "name_suffix" {
 
 resource "google_iam_workload_identity_pool" "main" {
   project                   = var.project_id
-  workload_identity_pool_id = "${var.pool_id}-${random_string.name_suffix.result}"
+  workload_identity_pool_id = var.pool_id
   display_name              = var.pool_display_name
   description               = var.pool_description
   disabled                  = false
@@ -14,7 +14,7 @@ resource "google_iam_workload_identity_pool" "main" {
 resource "google_iam_workload_identity_pool_provider" "main" {
   project                            = var.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.main.workload_identity_pool_id
-  workload_identity_pool_provider_id = "${var.provider_id}-${random_string.name_suffix.result}"
+  workload_identity_pool_provider_id = var.provider_id
   display_name                       = var.provider_display_name
   description                        = var.provider_description
   attribute_condition                = var.attribute_condition
