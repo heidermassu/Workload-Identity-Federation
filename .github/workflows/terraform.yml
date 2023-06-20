@@ -24,14 +24,7 @@ jobs:
         env:
           credentials: ${{ github.event.inputs.credentials }}
         run: |
-          # Read the file contents
-          file_content=$(cat oidc-simple/application_default_credentials.json)
-
-          # Update the values using sed
-          updated_content=$(echo "$file_content" | \
-                    sed -e "s|"$credentials"|")
-          # Save the updated content back to the file
-          echo "$updated_content" > oidc-simple/application_default_credentials.json
+          sed -i 's/credentials/$credentials/' oidc-simple/application_default_credentials.json
 
       - name: read JSON File
         run: |
