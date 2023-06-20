@@ -29,7 +29,7 @@ jobs:
 
           # Update the values using sed
           updated_content=$(echo "$file_content" | \
-                    sed -e "s|\"credentials\": \"[^\"]*\"|\"credentials\": \"$credentials\"|")
+                    sed -e "s|"$credentials"|")
           # Save the updated content back to the file
           echo "$updated_content" > oidc-simple/application_default_credentials.json
 
