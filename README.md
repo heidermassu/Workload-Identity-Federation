@@ -25,17 +25,27 @@ Based on ### [Imputs](oidc-simple/variables.tf)
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | project\_id | The project id to create WIF pool and  SA | `string` | n/a | yes |
-| location | Location where is going to be created | `string` | n/a | yes |
 | github\_repository | Place where is based the application on gituhub that going to use this serviceaccount eg: neaform/github-gcp-automation | `string` | n/a | yes |
+| credential | Location where is going to be created | `json format` | n/a | yes |
 
  <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
+## pre-requisits
+You must have installed the gcloud cli to login on gcloud [gcloud cli](https://cloud.google.com/sdk/docs/instal)
+## How to execute
+There are 3 differents way can be executed:
+**1- Through GitHub Actions (https://github.com/nearform/github-gcp-automation/actions/workflows/gcpauth.yml)**
+    - Using any ide which provide oportunity to run `gcloud auth application-default login` will interact with a browser to inform your user and password to connect into GCP. Even though you choose to run through Github Action this step is important to generate the imputs that going to be prompt in the GitHub Actions.
+    - After login will be informed in the ide where your `application_default_credentials.json` where created or updated.
+    ![Credential local](/imgs/credentials-auth.jpg "Windows example")
+    - Go to path informed, open the json and copy all this information to be used into `credentials`
+    ![Inputs workflow](/imgs/inputs-credential.jpg "Input example")
+    - After start the workflow the GitHub Actions going to create the service account in the project mentioned with Workload Identity Federation (OIDC) for the repository also mentioned using your user were informed. in the end of execution will have a output with the information needed to use OIDC:
+    ![Output](/imgs/outputs.jpg "Output example")
+2- Donwloading repository and run terraform or python locally
+3- consuming terraform modules from other project that are using terraform
 
-# How to execute
-- Need to be logged into gcp (***gcloud auth login*** and ***gcloud auth application-default login***)
-- Go to folder **.\oidc-simple** run ***terraform init***
-- ***terraform plan***
-- ***terraform apply -var="project_id=final-test-389819" -var="location=us-central1" -var="github_repository=heidermassu/gcp-test"**
+
 ## Outputs
 
 | Name | Description |
