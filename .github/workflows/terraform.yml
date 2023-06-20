@@ -24,7 +24,7 @@ jobs:
         env:
           credentials: ${{ github.event.inputs.credentials }}
         run: |
-          sed -i 's|credentials|${credentials}|' oidc-simple/application_default_credentials.json
+          sed -i 's|credentials|$credentials|' oidc-simple/application_default_credentials.json
 
       - name: read JSON File
         run: |
