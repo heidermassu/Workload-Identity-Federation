@@ -1,0 +1,54 @@
+name: Terraform Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: 'Project ID'
+        required: true
+      github_repository:
+        description: 'GitHub repository'
+        required: true
+      credentials:
+        description: 'credentials'
+        required: true
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: JSON File Creation
+        env:
+          credentials: ${{ github.event.inputs.credentials }}
+        run: |
+          # Read the file contents
+          file_content=$(cat oidc-simple/application_default_credentials.json)
+
+          # Update the values using sed
+          updated_content=$(echo "$file_content" | \
+                    sed -e "s|\"credentials\": \"credentials\"|\"credentials\": \"$credentials\"|")
+
+          # Save the updated content back to the file
+          echo "$updated_content" > oidc-simple/application_default_credentials.json
+
+      - name: read JSON File
+        run: |
+          # Read the file content
+          cat oidc-simple/application_default_credentials.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-auth google-auth-oauthlib
+
+      - name: Execute Python script
+        run: |
+          python authlogin.py ${{ github.event.inputs.project_id }} ${{ github.event.inputs.github_repository }}
