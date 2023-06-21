@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       project_id:
-        description: 'Project ID'
+        description: 'GCP Project ID'
         required: true
       github_repository:
-        description: 'GitHub repository'
+        description: 'GitHub repository (nearform/{repo name})'
         required: true
       credentials:
         type: string
-        description: 'credentials'
+        description: 'Credentials to be used to interact with the GCP project'
         required: true
 jobs:
   terraform:
@@ -27,7 +27,7 @@ jobs:
           echo "::add-mask::$SECRET_VALUE"
           echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
 
-      - name: JSON File Creation
+      - name: Generate application default
         run: |
           sed -i "s|credentials|$SECRET_VALUE|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
