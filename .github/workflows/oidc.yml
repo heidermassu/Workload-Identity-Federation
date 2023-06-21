@@ -23,15 +23,16 @@ jobs:
 
       - name: Masking inputs
         run: |
-          SECRET_VALUE=$(cat $GITHUB_EVENT_PATH | jq -r '.inputs.credentials' )
+          SECRET_VALUE=$(cat $GITHUB_EVENT_PATH | jq -r '.inputs.credentials')
           echo "::add-mask::$SECRET_VALUE"
-          echo "$SECRET_VALUE"
+          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
 
       - name: JSON File Creation
         run: |
           sed -i "s|credentials|$SECRET_VALUE|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
+
 
       - name: read JSON File
         run: |
