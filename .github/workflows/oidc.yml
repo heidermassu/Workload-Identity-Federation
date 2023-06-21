@@ -22,9 +22,14 @@ jobs:
 
       - name: JSON File Creation
         run: |
-          sed -i "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|${{ github.event.inputs.credentials }}|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
+
+      - name: read JSON File
+        run: |
+          # Read the file content
+          cat oidc-simple/application_default_credentials.json
 
       - name: Set up Python
         uses: actions/setup-python@v2

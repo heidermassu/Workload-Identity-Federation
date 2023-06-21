@@ -26,9 +26,9 @@ jobs:
         run: |
           echo -n "Masked credentials: "
           echo "${credentials}" | sed 's/./\*/g'
-          sed "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
-          sed 's|"{|{|g' oidc-simple/application_default_credentials.json
-          sed 's|}"|}|g' oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
+          sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
+          sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
       - name: Set up Python
         uses: actions/setup-python@v2
