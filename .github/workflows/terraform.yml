@@ -24,6 +24,8 @@ jobs:
         env:
           credentials: ${{ github.event.inputs.credentials }}
         run: |
+          echo -n "Masked credentials: "
+          echo "${credentials}" | sed 's/./\*/g'
           sed -i "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json

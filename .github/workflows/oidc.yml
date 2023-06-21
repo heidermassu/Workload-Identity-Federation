@@ -9,14 +9,8 @@ on:
       github_repository:
         description: 'GitHub repository'
         required: true
-      CLIENT_ID:
-        description: 'CLIENT_ID'
-        required: true
-      CLIENT_SECRET:
-        description: 'CLIENT_SECRET'
-        required: true
-      REFRESH_TOKEN:
-        description: 'REFRESH_TOKEN'
+      credentials:
+        description: 'credentials'
         required: true
 jobs:
   terraform:
@@ -26,32 +20,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      #- name: Login gcp
-      #  run: |
-      #    gcloud auth application-default login --no-launch-browser
-
-      - name: Update JSON File
+      - name: JSON File Creation
         env:
-          CLIENT_ID: ${{ github.event.inputs.CLIENT_ID }}
-          CLIENT_SECRET: ${{ github.event.inputs.CLIENT_SECRET }}
-          REFRESH_TOKEN: ${{ github.event.inputs.REFRESH_TOKEN }}
+          credentials: ${{ github.event.inputs.credentials }}
         run: |
-          # Read the file contents
-          file_content=$(cat oidc-simple/application_default_credentials.json)
-
-          # Update the values using sed
-          updated_content=$(echo "$file_content" | \
-                    sed -e "s|\"client_id\": \"CLIENT_ID\"|\"client_id\": \"$CLIENT_ID\"|" \
-                        -e "s|\"client_secret\": \"CLIENT_SECRET\"|\"client_secret\": \"$CLIENT_SECRET\"|" \
-                        -e "s|\"refresh_token\": \"TOKEN\"|\"refresh_token\": \"$REFRESH_TOKEN\"|")
-
-          # Save the updated content back to the file
-          echo "$updated_content" > oidc-simple/application_default_credentials.json
-
-      - name: read JSON File
-        run: |
-          # Read the file content
-          cat oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
+          sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
+          sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
       - name: Set up Python
         uses: actions/setup-python@v2
