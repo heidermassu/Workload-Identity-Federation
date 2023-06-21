@@ -24,6 +24,7 @@ jobs:
         run: |
           SECRET_VALUE=$(cat $GITHUB_EVENT_PATH | jq -r '.inputs.credentials' )
           echo "::add-mask::$SECRET_VALUE"
+          echo "$SECRET_VALUE"
 
       - name: JSON File Creation
         run: |
