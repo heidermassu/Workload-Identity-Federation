@@ -20,12 +20,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Save state
-        run: echo "SECRET_CREDENTIAL=${{ github.event.inputs.credentials }}" >> $GITHUB_STATE
+      - name: Masking inputs
+        run: |
+          SECRET_VALUE=$(cat $GITHUB_EVENT_PATH | jq -r '.inputs.credentials' )
+          echo "::add-mask::$SECRET_VALUE"
 
       - name: JSON File Creation
         run: |
-          sed -i "s|credentials|$GITHUB_STATE|g" oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|$SECRET_VALUE|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
