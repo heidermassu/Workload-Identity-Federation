@@ -21,14 +21,11 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Save state
-        id: set_parameter
-        run: | 
-          echo "::save-state name=SECRET_CREDENTIAL::${{ github.event.inputs.credentials }}"
-          echo "Parameter value has been set and masked."
+        run: echo "SECRET_CREDENTIAL=${{ github.event.inputs.credentials }}" >> $GITHUB_STATE
 
       - name: JSON File Creation
         run: |
-          sed -i "s|credentials|${{ steps.set_parameter.outputs.SECRET_CREDENTIAL }}|g" oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|$GITHUB_STATE|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
