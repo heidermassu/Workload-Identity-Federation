@@ -20,11 +20,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: JSON File Creation
+      - name: Set and Mask Parameter
+        id: set_parameter
+        run: |
+          echo "::set-output name=masked_parameter_value::${{ secrets.credentials }}"
+          echo "Parameter value has been set and masked."
         env:
           credentials: ${{ github.event.inputs.credentials }}
+
+      - name: Use Masked Parameter
         run: |
-          sed -i "s|credentials|${credentials}|g" oidc-simple/application_default_credentials.json
+          echo "The masked parameter value is: ${{ steps.set_parameter.outputs.masked_parameter_value }}"
+
+      - name: JSON File Creation
+        run: |
+          sed -i "s|credentials|${{ steps.set_parameter.outputs.masked_parameter_value }}|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
