@@ -10,6 +10,7 @@ on:
         description: 'GitHub repository'
         required: true
       credentials:
+        type: string
         description: 'credentials'
         required: true
 jobs:
