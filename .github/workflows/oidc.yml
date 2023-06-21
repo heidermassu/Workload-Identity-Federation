@@ -27,7 +27,7 @@ jobs:
 
       - name: JSON File Creation
         run: |
-          sed -i "s|credentials|$SECRET_VALUE|g" oidc-simple/application_default_credentials.json
+          sed -i "s|credentials|${SECRET_VALUE}|g" oidc-simple/application_default_credentials.json
           sed -i 's|"{|{|g' oidc-simple/application_default_credentials.json
           sed -i 's|}"|}|g' oidc-simple/application_default_credentials.json
 
