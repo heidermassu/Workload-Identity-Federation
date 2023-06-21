@@ -42,7 +42,7 @@ There are 3 different way to use the oidc simple module:
 - Run `gcloud auth application-default login` to log in into the target GCP project. This step will create the application default credentials file
   that you will use to provide the correct credential to run the action. The file location is displayed in console after the login is completed successfully
   ![Credential local](/imgs/credentials-auth.jpg "Windows example")
-- Go to path informed, open the json and copy all this information to be used into `credentials` (TO BE REVIEWED/UPDATED)
+- Go to path informed, open the json and copy all this information to be used into `credentials`
     ![Inputs workflow](/imgs/inputs-credential.jpg "Input example")
 - The workflow will create the required SA and the WorkloadIdentityPool. The relevant info will be found in the "run terraform" output in the action logs.
     ![Output](/imgs/outputs.jpg "Output example")
